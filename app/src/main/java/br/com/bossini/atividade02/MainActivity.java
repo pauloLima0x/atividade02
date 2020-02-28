@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-              percent = progress / 100;
-
+              percent = progress / 100d;
+              percentTextView.setText(percentFormat.format(percent));
           }
 
           @Override
@@ -81,10 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
                     billAmount = Double.parseDouble(s.toString()) / 100; // pega-se a string
                     amountTextView.setText(currencyFormat.format(billAmount)); // Pede-se para o currencyAmount formatar monetariamente e dpois oo amountView mopstrará esse valor formatado. resultado será exibido.
-                    double tip = billAmount * percent;
-                    double total = billAmount + tip;
-                    tipTextView.setText(currencyFormat.format(tip));
-                    totalTextView.setText(currencyFormat.format(total));
+                    calcular();
 
                 }catch(NumberFormatException e) {
 
@@ -101,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void calcular() {
+
+        double tip = billAmount * percent;
+        double total = billAmount + tip;
+        tipTextView.setText(currencyFormat.format(tip));
+        totalTextView.setText(currencyFormat.format(total));
 
     }
 
