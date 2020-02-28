@@ -38,9 +38,34 @@ public class MainActivity extends AppCompatActivity {
         tipTextView = findViewById(R.id.tipTextView);
         totalTextView = findViewById(R.id.totalTextView);
 
+
+        // Setando valores iniciais
+
+
+        zerarTudo();
+
         EditText amountEditText = findViewById(R.id.amountEditText);
 
         SeekBar percentSeekBar = findViewById(R.id.percentSeekBar);
+
+      percentSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+          @Override
+          public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+              percent = progress / 100;
+
+          }
+
+          @Override
+          public void onStartTrackingTouch(SeekBar seekBar) {
+
+          }
+
+          @Override
+          public void onStopTrackingTouch(SeekBar seekBar) {
+
+          }
+      });
 
 
         amountEditText.addTextChangedListener(new TextWatcher() {
@@ -52,6 +77,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                try{
+
+                    billAmount = Double.parseDouble(s.toString()) / 100; // pega-se a string
+                    amountTextView.setText(currencyFormat.format(billAmount)); // Pede-se para o currencyAmount formatar monetariamente e dpois oo amountView mopstrará esse valor formatado. resultado será exibido.
+                    double tip = billAmount * percent;
+                    double total = billAmount + tip;
+                    tipTextView.setText(currencyFormat.format(tip));
+                    totalTextView.setText(currencyFormat.format(total));
+
+                }catch(NumberFormatException e) {
+
+                    zerarTudo();
+
+                }
+
+
             }
 
             @Override
@@ -60,5 +101,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+
+    private void zerarTudo() {
+
+        billAmount = 0;
+        amountTextView.setText(currencyFormat.format(billAmount));
+        tipTextView.setText(currencyFormat.format(billAmount * percent));
+        totalTextView.setText(currencyFormat.format(billAmount * percent + billAmount));
+
+    }
+
+
+
 }
